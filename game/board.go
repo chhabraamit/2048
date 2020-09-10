@@ -147,7 +147,7 @@ const _clearScreenSequence = "\033[H\033[2J"
 
 func (b *board) Display() {
 	//b.matrix = getRandom()
-	//fmt.Println(_clearScreenSequence)
+	fmt.Println(_clearScreenSequence)
 	for i := 0; i < len(b.matrix); i++ {
 		printHorizontal()
 		for j := 0; j < len(b.matrix[0]); j++ {
