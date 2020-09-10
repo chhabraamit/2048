@@ -15,10 +15,23 @@ type Board interface {
 	Display()
 	AddElement()
 	TakeInput()
+	IsOver() bool
 }
 
 type board struct {
 	matrix [][]int
+}
+
+func (b *board) IsOver() bool {
+	empty := 0
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			if b.matrix[i][j] == 0 {
+				empty++
+			}
+		}
+	}
+	return empty == 0
 }
 
 func (b *board) TakeInput() {

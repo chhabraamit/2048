@@ -12,10 +12,14 @@ func main() {
 	g.AddElement()
 
 	for true {
+		if g.IsOver() {
+			break
+		}
 		g.AddElement()
 		g.Display()
 		g.TakeInput()
 		//g.Display()
 		fmt.Println("new game")
 	}
+	fmt.Printf("**** Game Over **** \n")
 }
