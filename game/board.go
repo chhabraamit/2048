@@ -22,7 +22,11 @@ func (b board) Display() {
 	for i := 0; i < len(b.matrix); i++ {
 		printVertical()
 		for j := 0; j < len(b.matrix[0]); j++ {
-			fmt.Printf("%6d", b.matrix[i][j])
+			if b.matrix[i][j] == 0 {
+				fmt.Printf("%6s", "")
+			}else {
+				fmt.Printf("%6d", b.matrix[i][j])
+			}
 		}
 		fmt.Printf("%4s", "")
 		printVertical()
@@ -45,6 +49,7 @@ func printHorizontal() {
 func getRandom() [][]int {
 	arr := make([]int, 0)
 	val := 2
+	arr = append(arr, 0)
 	arr = append(arr, val)
 	for true {
 		val *= 2
