@@ -26,12 +26,12 @@ func Test_mergeElements(t *testing.T) {
 			args: args{
 				arr: []int{2, 2, 0, 0},
 			},
-			want:  []int{4, 0, 0, 0},
+			want: []int{4, 0, 0, 0},
 		},
 		{
 			name: "three",
 			args: args{
-				arr:  []int{4, 4, 2, 0},
+				arr: []int{4, 4, 2, 0},
 			},
 			want: []int{8, 2, 0, 0},
 		},

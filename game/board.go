@@ -46,6 +46,9 @@ const (
 )
 
 func (b *board) move(dir Dir) {
+	if dir != LEFT {
+		return
+	}
 	for i := 0; i < rows; i++ {
 		old := b.matrix[i]
 		b.matrix[i] = movedRow(old)
@@ -64,7 +67,7 @@ func movedRow(elems []int) []int {
 	for i := 0; i < remaining; i++ {
 		nonEmpty = append(nonEmpty, 0)
 	}
-	return nonEmpty
+	return mergeElements(nonEmpty)
 }
 
 func (b *board) AddElement() {
@@ -104,7 +107,7 @@ const _clearScreenSequence = "\033[H\033[2J"
 
 func (b *board) Display() {
 	//b.matrix = getRandom()
-	fmt.Println(_clearScreenSequence)
+	//fmt.Println(_clearScreenSequence)
 	printHorizontal()
 	for i := 0; i < len(b.matrix); i++ {
 		printVertical()
@@ -167,4 +170,19 @@ func New() Board {
 	return &board{
 		matrix: matrix,
 	}
+}
+
+func mergeElements(arr []int) []int {
+	newArr := make([]int, len(arr))
+	newArr[0] = arr[0]
+	index := 0
+	for i := 1; i < len(arr); i++ {
+		if arr[i] == newArr[index] {
+			newArr[index] += arr[i]
+		} else {
+			index++
+			newArr[index] = arr[i]
+		}
+	}
+	return newArr
 }
