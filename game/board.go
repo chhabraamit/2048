@@ -1,10 +1,9 @@
 package game
 
 import (
-	"bufio"
 	"fmt"
+	"github.com/eiannone/keyboard"
 	"math/rand"
-	"os"
 	"time"
 )
 
@@ -20,6 +19,7 @@ type Board interface {
 
 type board struct {
 	matrix [][]int
+	over   bool
 }
 
 func (b *board) IsOver() bool {
@@ -31,23 +31,28 @@ func (b *board) IsOver() bool {
 			}
 		}
 	}
-	return empty == 0
+	return empty == 0 || b.over
 }
 
 func (b *board) TakeInput() {
-	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\n')
-	switch string([]byte(input)[0]) {
-	case "a":
-		b.move(LEFT)
-	case "d":
-		b.move(RIGHT)
-	case "w":
-		b.move(UP)
-	case "s":
-		b.move(DOWN)
+	//reader := bufio.NewReader(os.Stdin)
+	//input, _ := reader.ReadString('\n')
+	//switch string([]byte(input)[0]) {
+	//case "a":
+	//	b.move(LEFT)
+	//case "d":
+	//	b.move(RIGHT)
+	//case "w":
+	//	b.move(UP)
+	//case "s":
+	//	b.move(DOWN)
+	//}
+	dir, _ := getCharKeystroke() // todo: ignoring for now as we dont return error
+	if dir == EXIT {
+		b.over = true
 	}
-	fmt.Printf("Input Char Is : %v\n", string([]byte(input)[0]))
+	b.move(dir)
+	//fmt.Printf("Input Char Is : %v\n", string([]byte(input)[0]))
 }
 
 type Dir int
@@ -57,6 +62,7 @@ const (
 	DOWN
 	LEFT
 	RIGHT
+	EXIT
 )
 
 func (b *board) move(dir Dir) {
@@ -70,7 +76,6 @@ func (b *board) move(dir Dir) {
 	case UP:
 		b.moveUp()
 	}
-
 }
 
 func (b *board) moveDown() {
@@ -270,4 +275,36 @@ func mergeElements(arr []int) []int {
 		}
 	}
 	return newArr
+}
+
+func getCharKeystroke() (Dir, error) {
+	if err := keyboard.Open(); err != nil {
+		panic(err)
+	}
+	defer func() {
+		_ = keyboard.Close()
+	}()
+	char, key, err := keyboard.GetKey()
+	ans := int(char)
+	if ans == 0 {
+		ans = int(key)
+	}
+	if err != nil {
+		//	fmt.Printf("error while reading input using keystrokes: %v", err)
+		return LEFT, err
+	}
+	switch ans {
+	case 119, 65517:
+		return UP, nil
+	case 97, 65515:
+		return LEFT, nil
+	case 115, 65516:
+		return DOWN, nil
+	case 100, 65514:
+		return RIGHT, nil
+	case 3:
+		return EXIT, nil
+	}
+	//fmt.Printf("char : %v, key: %v and ans: %v\n", char, key, ans)
+	return LEFT, nil
 }
