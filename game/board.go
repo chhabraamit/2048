@@ -1,8 +1,10 @@
 package game
 
 import (
+	"bufio"
 	"fmt"
 	"math/rand"
+	"os"
 )
 
 const rows = 4
@@ -19,9 +21,50 @@ type board struct {
 }
 
 func (b *board) TakeInput() {
-	var char rune
-	fmt.Scanf("%c", &char)
-	fmt.Printf("keyboar input is: %v\n", char)
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+	switch string([]byte(input)[0]) {
+	case "a":
+		b.move(LEFT)
+	case "d":
+		b.move(RIGHT)
+	case "w":
+		b.move(UP)
+	case "s":
+		b.move(DOWN)
+	}
+	fmt.Printf("Input Char Is : %v\n", string([]byte(input)[0]))
+}
+
+type Dir int
+
+const (
+	UP Dir = iota
+	DOWN
+	LEFT
+	RIGHT
+)
+
+func (b *board) move(dir Dir) {
+	for i := 0; i < rows; i++ {
+		old := b.matrix[i]
+		b.matrix[i] = movedRow(old)
+		fmt.Printf("updated row is : %v || old row: %v\n", b.matrix[i], old)
+	}
+}
+
+func movedRow(elems []int) []int {
+	nonEmpty := make([]int, 0)
+	for i := 0; i < cols; i++ {
+		if elems[i] != 0 {
+			nonEmpty = append(nonEmpty, elems[i])
+		}
+	}
+	remaining := cols - len(nonEmpty)
+	for i := 0; i < remaining; i++ {
+		nonEmpty = append(nonEmpty, 0)
+	}
+	return nonEmpty
 }
 
 func (b *board) AddElement() {
