@@ -58,3 +58,36 @@ func Test_mergeElements(t *testing.T) {
 		})
 	}
 }
+
+func Test_board_transpose(t *testing.T) {
+	type fields struct {
+		matrix [][]int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+	}{
+		{
+			name: "one",
+			fields: fields{
+				matrix: [][]int{
+					{1, 2, 3, 9},
+					{4, 5, 6, 10},
+					{6, 7, 8, 11},
+					{16, 17, 18, 111},
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			b := &board{
+				matrix: tt.fields.matrix,
+			}
+			b.Display()
+			b.transpose()
+			b.Display()
+			t.Fail()
+		})
+	}
+}

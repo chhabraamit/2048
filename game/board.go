@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"time"
 )
 
 const rows = 4
@@ -46,13 +47,37 @@ const (
 )
 
 func (b *board) move(dir Dir) {
-	if dir != LEFT {
-		return
+	switch dir {
+	case LEFT:
+		b.moveLeft()
+	case RIGHT:
+		b.moveRight()
+	case DOWN:
+		b.moveDown()
+	case UP:
+		b.moveUp()
 	}
+
+}
+
+func (b *board) moveDown() {
+	b.transpose()
+	b.moveLeft()
+	b.transpose()
+	b.transpose()
+	b.transpose()
+}
+
+func (b *board) moveRight() {
+	b.reverse()
+	b.moveLeft()
+	b.reverse()
+}
+
+func (b *board) moveLeft() {
 	for i := 0; i < rows; i++ {
 		old := b.matrix[i]
 		b.matrix[i] = movedRow(old)
-		fmt.Printf("updated row is : %v || old row: %v\n", b.matrix[i], old)
 	}
 }
 
@@ -71,7 +96,9 @@ func movedRow(elems []int) []int {
 }
 
 func (b *board) AddElement() {
-	val := rand.Int() % 100
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+	val := r1.Int() % 100
 	if val <= 69 {
 		val = 2
 	} else {
@@ -86,7 +113,7 @@ func (b *board) AddElement() {
 			}
 		}
 	}
-	elementCount := rand.Int()%empty + 1
+	elementCount := r1.Int()%empty + 1
 	index := 0
 
 	for i := 0; i < rows; i++ {
@@ -123,6 +150,52 @@ func (b *board) Display() {
 		fmt.Println()
 	}
 	printHorizontal()
+}
+
+func (b *board) reverse() {
+	for i := 0; i < rows; i++ {
+		b.matrix[i] = reversed(b.matrix[i])
+	}
+}
+
+func (b *board) transpose() {
+	ans := make([][]int, 0)
+	for i := 0; i < rows; i++ {
+		ans = append(ans, make([]int, cols))
+	}
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			ans[i][j] = b.matrix[cols-j-1][i]
+		}
+	}
+	b.matrix = ans
+}
+
+func (b *board) moveUp() {
+	b.reverseRows()
+	b.moveDown()
+	b.reverseRows()
+}
+
+func (b *board) reverseRows() {
+	ans := make([][]int, 0)
+	for i := 0; i < rows; i++ {
+		ans = append(ans, make([]int, cols))
+	}
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			ans[rows-i-1][j] = b.matrix[i][j]
+		}
+	}
+	b.matrix = ans
+}
+
+func reversed(arr []int) []int {
+	ans := make([]int, 0)
+	for i := len(arr) - 1; i >= 0; i-- {
+		ans = append(ans, arr[i])
+	}
+	return ans
 }
 
 func printVertical() {
