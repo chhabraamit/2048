@@ -19,7 +19,9 @@ type board struct {
 }
 
 func (b *board) TakeInput() {
-	panic("implement me")
+	var char rune
+	fmt.Scanf("%c", &char)
+	fmt.Printf("keyboar input is: %v\n", char)
 }
 
 func (b *board) AddElement() {
