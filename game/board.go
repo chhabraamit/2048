@@ -148,18 +148,17 @@ const _clearScreenSequence = "\033[H\033[2J"
 func (b *board) Display() {
 	//b.matrix = getRandom()
 	//fmt.Println(_clearScreenSequence)
-	printHorizontal()
 	for i := 0; i < len(b.matrix); i++ {
-		printVertical()
+		printHorizontal()
 		for j := 0; j < len(b.matrix[0]); j++ {
+			fmt.Printf("%3s", "")
 			if b.matrix[i][j] == 0 {
-				fmt.Printf("%6s", "")
+				fmt.Printf("%-6s|", "")
 			} else {
-				fmt.Printf("%6d", b.matrix[i][j])
+				fmt.Printf("%-6d|", b.matrix[i][j])
 			}
 		}
 		fmt.Printf("%4s", "")
-		printVertical()
 		fmt.Println()
 	}
 	printHorizontal()
@@ -216,7 +215,7 @@ func printVertical() {
 }
 
 func printHorizontal() {
-	for i := 0; i < 30; i++ {
+	for i := 0; i < 40; i++ {
 		fmt.Print("-")
 	}
 	fmt.Println()
