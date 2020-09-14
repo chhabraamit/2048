@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/eiannone/keyboard"
 	"github.com/fatih/color"
+	log "github.com/sirupsen/logrus"
 	"math/rand"
 	"time"
 )
@@ -82,13 +83,13 @@ func (b *board) TakeInput() {
 			panic(err)
 		}
 	}
-	fmt.Printf("the dir is: %v \n", dir)
+	log.Debugf("the dir is: %v \n", dir)
 	if dir == NO_DIR {
 		b.TakeInput() // get a valid direction
 	}
 	b.move(dir)
 
-	//fmt.Printf("Input Char Is : %v\n", string([]byte(input)[0]))
+	//log.Debugf("Input Char Is : %v\n", string([]byte(input)[0]))
 }
 
 type Dir int
@@ -259,7 +260,7 @@ func reversed(arr []int) []int {
 }
 
 func printVertical() {
-	fmt.Print("|")
+	log.Debug("|")
 }
 
 func printHorizontal() {
@@ -334,7 +335,7 @@ func getCharKeystroke() (Dir, error) {
 	if ans == 0 {
 		ans = int(key)
 	}
-	fmt.Printf("the key is: %v \n", ans)
+	log.Debugf("the key is: %v \n", ans)
 	if err != nil {
 		return NO_DIR, err
 	}

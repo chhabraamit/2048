@@ -1,16 +1,22 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/chhabra/2048/game"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
-	fmt.Printf("Getting started\n")
+	debug := flag.Bool("debug", false, "debugging flag")
+	flag.Parse()
+	if *debug {
+		log.SetLevel(log.DebugLevel)
+	}
+
 	g := game.New()
 	g.AddElement()
 	g.AddElement()
-
 	for true {
 		if g.IsOver() {
 			break
@@ -18,8 +24,6 @@ func main() {
 		g.AddElement()
 		g.Display()
 		g.TakeInput()
-		//g.Display()
-		fmt.Println("new game")
 	}
 	fmt.Printf("**** Game Over **** \n")
 	max, total := g.CountScore()
