@@ -1,8 +1,10 @@
 package game
 
 import (
+	"errors"
 	"fmt"
 	"github.com/eiannone/keyboard"
+	"github.com/fatih/color"
 	"math/rand"
 	"time"
 )
@@ -18,8 +20,10 @@ type Board interface {
 }
 
 type board struct {
-	matrix [][]int
-	over   bool
+	matrix  [][]int
+	over    bool
+	newRow  int
+	newCol  int
 }
 
 func (b *board) IsOver() bool {
@@ -47,11 +51,22 @@ func (b *board) TakeInput() {
 	//case "s":
 	//	b.move(DOWN)
 	//}
-	dir, _ := getCharKeystroke() // todo: ignoring for now as we dont return error
-	if dir == EXIT {
-		b.over = true
+	var dir Dir
+	dir, err := getCharKeystroke() // todo: ignoring for now as we dont return error
+	if err != nil {
+		if errors.Is(err, errEndGame) {
+			b.over = true
+			return
+		} else {
+			panic(err)
+		}
+	}
+	fmt.Printf("the dir is: %v \n", dir)
+	if dir == NO_DIR {
+		b.TakeInput() // get a valid direction
 	}
 	b.move(dir)
+
 	//fmt.Printf("Input Char Is : %v\n", string([]byte(input)[0]))
 }
 
@@ -62,7 +77,7 @@ const (
 	DOWN
 	LEFT
 	RIGHT
-	EXIT
+	NO_DIR
 )
 
 func (b *board) move(dir Dir) {
@@ -139,6 +154,8 @@ func (b *board) AddElement() {
 			if b.matrix[i][j] == 0 {
 				index++
 				if index == elementCount {
+					b.newRow = i
+					b.newCol = j
 					b.matrix[i][j] = val
 					return
 				}
@@ -151,6 +168,7 @@ func (b *board) AddElement() {
 const _clearScreenSequence = "\033[H\033[2J"
 
 func (b *board) Display() {
+	d := color.New(color.FgBlue, color.Bold)
 	//b.matrix = getRandom()
 	fmt.Println(_clearScreenSequence)
 	for i := 0; i < len(b.matrix); i++ {
@@ -160,7 +178,11 @@ func (b *board) Display() {
 			if b.matrix[i][j] == 0 {
 				fmt.Printf("%-6s|", "")
 			} else {
-				fmt.Printf("%-6d|", b.matrix[i][j])
+				if i == b.newRow && j == b.newCol {
+					d.Printf("%-6d|", b.matrix[i][j])
+				} else {
+					fmt.Printf("%-6d|", b.matrix[i][j])
+				}
 			}
 		}
 		fmt.Printf("%4s", "")
@@ -277,6 +299,8 @@ func mergeElements(arr []int) []int {
 	return newArr
 }
 
+var errEndGame = errors.New("GameOverError")
+
 func getCharKeystroke() (Dir, error) {
 	if err := keyboard.Open(); err != nil {
 		panic(err)
@@ -289,9 +313,9 @@ func getCharKeystroke() (Dir, error) {
 	if ans == 0 {
 		ans = int(key)
 	}
+	fmt.Printf("the key is: %v \n", ans)
 	if err != nil {
-		//	fmt.Printf("error while reading input using keystrokes: %v", err)
-		return LEFT, err
+		return NO_DIR, err
 	}
 	switch ans {
 	case 119, 65517:
@@ -303,8 +327,7 @@ func getCharKeystroke() (Dir, error) {
 	case 100, 65514:
 		return RIGHT, nil
 	case 3:
-		return EXIT, nil
+		return NO_DIR, errEndGame
 	}
-	//fmt.Printf("char : %v, key: %v and ans: %v\n", char, key, ans)
-	return LEFT, nil
+	return NO_DIR, nil
 }
