@@ -10,13 +10,13 @@ import (
 const playInstructionDelay = 2
 
 func main() {
-
 	debug := flag.Bool("debug", false, "debugging flag")
 	flag.Parse()
 	if *debug {
 		log.SetLevel(log.DebugLevel)
 	}
-	fmt.Printf("Use {W A S D} or Arrow keys to move the board\n")
+
+	fmt.Printf("Use {W A S D} or {h j k l} or Arrow keys to move the board\n")
 	fmt.Printf("Press any key to start\n")
 	_, err := game.GetCharKeystroke()
 	if err != nil {

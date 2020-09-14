@@ -25,13 +25,13 @@ func GetCharKeystroke() (Dir, error) {
 		return NO_DIR, err
 	}
 	switch ans {
-	case 119, 65517:
+	case 119, 65517, 107:
 		return UP, nil
-	case 97, 65515:
+	case 97, 65515, 104:
 		return LEFT, nil
-	case 115, 65516:
+	case 115, 65516, 106:
 		return DOWN, nil
-	case 100, 65514:
+	case 100, 65514, 108:
 		return RIGHT, nil
 	case 3:
 		return NO_DIR, errEndGame
