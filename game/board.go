@@ -69,13 +69,14 @@ func (b *board) IsOver() bool {
 
 func (b *board) TakeInput() {
 	var dir Dir
-	dir, err := getCharKeystroke()
+	dir, err := GetCharKeystroke()
 	if err != nil {
 		if errors.Is(err, errEndGame) {
 			b.over = true
 			return
 		} else {
-			panic(err)
+			log.Fatal("error while taking input for game: %v", err)
+			return
 		}
 	}
 	log.Debugf("the dir is: %v \n", dir)

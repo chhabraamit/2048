@@ -5,10 +5,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// getCharKeystroke returns a key without pressing enter/return key
+// GetCharKeystroke returns a key without pressing enter/return key
 // supported keys are [W A S D] and Arrow keys
 // below magical numbers are their key codes
-func getCharKeystroke() (Dir, error) {
+func GetCharKeystroke() (Dir, error) {
 	if err := keyboard.Open(); err != nil {
 		panic(err)
 	}
