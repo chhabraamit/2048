@@ -7,5 +7,5 @@
 ------
 
 ### Getting started 
-> go run ./main.go
+`go run ./main.go`
 
