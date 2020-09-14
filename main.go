@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/chhabra/2048/game"
+	"github.com/chhabraamit/2048/game"
 	log "github.com/sirupsen/logrus"
 )
 
