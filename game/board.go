@@ -17,13 +17,34 @@ type Board interface {
 	AddElement()
 	TakeInput()
 	IsOver() bool
+	CountScore() (int, int)
 }
 
 type board struct {
-	matrix  [][]int
-	over    bool
-	newRow  int
-	newCol  int
+	matrix [][]int
+	over   bool
+	newRow int
+	newCol int
+}
+
+func (b *board) CountScore() (int, int) {
+	total := 0
+	max := 0
+	matrix := b.matrix
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			total += matrix[i][j]
+			max = maxInts(max, matrix[i][j])
+		}
+	}
+	return max, total
+}
+
+func maxInts(one int, two int) int {
+	if one > two {
+		return one
+	}
+	return two
 }
 
 func (b *board) IsOver() bool {
