@@ -1,4 +1,4 @@
-package game
+package main
 
 /**
 This is an implementation of popular 2048 game.
