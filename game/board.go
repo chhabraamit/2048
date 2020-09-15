@@ -14,7 +14,8 @@ const (
 	_cols = 4
 
 	// this is the sequence which is used to clear the screen :magic
-	_clearScreenSequence = "\033[H\033[2J" // this works in mac. Might need other string for other OS
+	// _clearScreenSequence = "\033[H\033[2J" // this works in mac. Might need other string for other OS
+	_clearScreenSequence =	"\033c" // this clears the screen and scroll buffer
 
 	probabilitySpace = 100
 	probabilityOfTwo = 80 // probabilityOfTwo times 2 will come as new element out of  probabilitySpace1
