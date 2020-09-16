@@ -4,10 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/fatih/color"
-	log "github.com/sirupsen/logrus"
+	"log"
 	"math/rand"
 	"time"
 )
+
+var DebugLogLevel bool
 
 const (
 	_rows = 4
@@ -79,7 +81,10 @@ func (b *board) TakeInput() {
 			return
 		}
 	}
-	log.Debugf("the dir is: %v \n", dir)
+	if DebugLogLevel {
+		log.Printf("the dir is: %v \n", dir)
+	}
+
 	if dir == NO_DIR {
 		// this makes pressing any keys other than move-set doesn't make any change in the game
 		b.TakeInput() // retry to get a valid direction
@@ -138,6 +143,7 @@ func (b *board) Display() {
 	fmt.Println(_clearScreenSequence)
 	for i := 0; i < len(b.matrix); i++ {
 		printHorizontal()
+		fmt.Printf("|")
 		for j := 0; j < len(b.matrix[0]); j++ {
 			fmt.Printf("%3s", "")
 			if b.matrix[i][j] == 0 {
@@ -154,11 +160,6 @@ func (b *board) Display() {
 		fmt.Println()
 	}
 	printHorizontal()
-}
-
-// printVertical for printing a vertical grid element
-func printVertical() {
-	log.Debug("|")
 }
 
 // printHorizontal prints a grid row

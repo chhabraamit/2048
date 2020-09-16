@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/chhabraamit/2048/game"
-	log "github.com/sirupsen/logrus"
+	"log"
 )
 
 const playInstructionDelay = 2
@@ -13,7 +13,7 @@ func main() {
 	debug := flag.Bool("debug", false, "debugging flag")
 	flag.Parse()
 	if *debug {
-		log.SetLevel(log.DebugLevel)
+		game.DebugLogLevel = *debug
 	}
 
 	fmt.Printf("Use {W A S D} or {h j k l} or Arrow keys to move the board\n")

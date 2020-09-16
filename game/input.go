@@ -2,7 +2,7 @@ package game
 
 import (
 	"github.com/eiannone/keyboard"
-	log "github.com/sirupsen/logrus"
+	"log"
 )
 
 // GetCharKeystroke returns a key without pressing enter/return key
@@ -20,7 +20,9 @@ func GetCharKeystroke() (Dir, error) {
 	if ans == 0 {
 		ans = int(key)
 	}
-	log.Debugf("the key is: %v \n", ans)
+	if DebugLogLevel {
+		log.Printf("the key is: %v \n", ans)
+	}
 	if err != nil {
 		return NO_DIR, err
 	}
