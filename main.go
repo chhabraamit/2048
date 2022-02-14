@@ -10,6 +10,9 @@ import (
 const playInstructionDelay = 2
 
 func main() {
+	BLA := "Just testing"
+	fmt.Println(BLA)
+
 	debug := flag.Bool("debug", false, "debugging flag")
 	flag.Parse()
 	if *debug {
